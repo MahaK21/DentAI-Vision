@@ -1,6 +1,5 @@
-train: C:\Users\hetb0\Desktop\QMIND\Code\dentex_dataset\yolo_data\images\train
-val: C:\Users\hetb0\Desktop\QMIND\Code\dentex_dataset\yolo_data\images\val
-# Change paths as required - these are the paths to the train and val in yolo format
+train: <yolo/train images path>
+val: <yolo/val images path>
 
 nc: 2
 names:
