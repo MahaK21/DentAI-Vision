@@ -1,0 +1,12 @@
+How do you run the model on images you give it? 
+
+python detect.py --weights /path/to/your/weights/best.pt --source /path/to/your/validation/images --save-txt --project /path/to/output/labels_folder --name experiment_name
+
+What Each Option Means:
+--weights: The file path to your trained model weights (e.g., best.pt).
+--source: The directory path where your input images (e.g., validation images) are located.
+--save-txt: A flag that tells the script to save the detection results as text files.
+--project: The directory path where the output (the generated label files) will be saved.
+--name: The name of the experiment; this creates a subfolder under the project folder to keep the outputs organized.
+
+Replace the paths with actual ones on your machine, and run the command in your terminal to get the model to label your images.
