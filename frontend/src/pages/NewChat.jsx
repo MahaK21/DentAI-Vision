@@ -3,8 +3,20 @@ import "./NewChat.css"
 import Navbar from "../Navbar"
 
 import { startConversation } from "../scripts/Convo"
+import { useState, useRef } from "react"
+
 
 const NewChat = () => {
+
+	const [file, setFile] = useState(null)
+	const [prompt, setPrompt] = useState("")
+
+	const inputField = useRef(null);
+
+	const handleClick = (event) => {
+		inputField.current.click();
+	}
+
   return (
     <div className="app-container">
       <Navbar/>
@@ -14,7 +26,7 @@ const NewChat = () => {
         <h1 className="main-heading">Start a New Chat</h1>
 
         {/* Upload Button */}
-        <button className="upload-button">
+        <button className="upload-button" onClick={handleClick}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -32,15 +44,20 @@ const NewChat = () => {
           </svg>
           <span>Upload X-Ray</span>
         </button>
+		<input type="file" ref={inputField} onChange={e => setFile(e.target.files[0])} style={{display: "none"}}></input>
 
         <p className="helper-text">Upload an X-Ray photo to get started.</p>
 
         {/* Chat Input */}
         <div className="chat-input-container">
-          <input type="text" placeholder="How can I help you today?" className="chat-input" />
+          <input type="text" placeholder="How can I help you today?"
+		  		value={prompt} 
+		  		onInput={e => setPrompt(e.target.value)}
+				className="chat-input"
+			/>
 
 		  { /* When we click this, we need to get the data from the text field and the image */}
-          <button className="send-button" onClick={handleSubmit}>Send</button>
+          <button className="send-button" onClick={() => startConversation(file, prompt)}>Send</button>
         </div>
       </main>
     </div>
@@ -48,7 +65,11 @@ const NewChat = () => {
 }
 
 function handleSubmit() {
-	startConversation()
+	const text = document.getElementById("chat-input")
+	console.log(text)
+
+
+	startConversation(null, text.value)
 }
 
 export default NewChat
