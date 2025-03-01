@@ -1,0 +1,8 @@
+train: C:\Users\hetb0\Desktop\QMIND\Code\dentex_dataset\yolo_data\images\train
+val: C:\Users\hetb0\Desktop\QMIND\Code\dentex_dataset\yolo_data\images\val
+# Change paths as required - these are the paths to the train and val in yolo format
+
+nc: 2
+names:
+  0: caries
+  1: impacted

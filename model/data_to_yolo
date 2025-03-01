@@ -1,0 +1,110 @@
+import os
+import glob
+import json
+import shutil
+import random
+from collections import defaultdict
+
+# configuration
+base_dir = "dentex_dataset"
+yolo_base = os.path.join(base_dir, "yolo_data")
+src_images_dir = os.path.join(base_dir, "origin", "quadrant-enumeration-disease", "xrays")
+json_path = os.path.join(base_dir, "origin", "quadrant-enumeration-disease", "train_quadrant_enumeration_disease.json")
+train_ratio = 0.8  # use 80% of images for training, 20% for validation
+
+# map original json category id to yolo class ids (adjust these as needed)
+disease_map = {
+    0: 0,  # e.g., caries
+    1: 1   # e.g., impacted (modify or remove if needed)
+}
+
+# create the yolo folder structure
+folders = [
+    os.path.join(yolo_base, "images", "train"),
+    os.path.join(yolo_base, "images", "val"),
+    os.path.join(yolo_base, "labels", "train"),
+    os.path.join(yolo_base, "labels", "val")
+]
+for folder in folders:
+    os.makedirs(folder, exist_ok=True)
+    print(f"created folder: {folder}")
+
+# copy and split images into train and validation sets
+png_files = glob.glob(os.path.join(src_images_dir, "*.png"))
+random.shuffle(png_files)
+split_index = int(len(png_files) * train_ratio)
+train_files = png_files[:split_index]
+val_files = png_files[split_index:]
+
+train_images_dir = os.path.join(yolo_base, "images", "train")
+val_images_dir = os.path.join(yolo_base, "images", "val")
+
+for file_path in train_files:
+    shutil.copy(file_path, os.path.join(train_images_dir, os.path.basename(file_path)))
+print(f"copied {len(train_files)} training images.")
+
+for file_path in val_files:
+    shutil.copy(file_path, os.path.join(val_images_dir, os.path.basename(file_path)))
+print(f"copied {len(val_files)} validation images.")
+
+# parse the json annotations file
+with open(json_path, "r") as f:
+    data = json.load(f)
+
+images_info = data["images"]
+annotations = data["annotations"]
+
+# build a dictionary mapping image id to its file name, width, and height
+id_to_img = {}
+for img in images_info:
+    img_id = img["id"]
+    file_name = img["file_name"]
+    w, h = img["width"], img["height"]
+    id_to_img[img_id] = (file_name, w, h)
+
+# group annotations by image id for easier lookup
+imgid_to_anns = defaultdict(list)
+for ann in annotations:
+    imgid_to_anns[ann["image_id"]].append(ann)
+
+# helper function to write yolo label files for an image
+def write_label_for_image(img_id, target_dir):
+    file_name, width, height = id_to_img[img_id]
+    base_name, _ = os.path.splitext(file_name)
+    yolo_lines = []
+    for ann in imgid_to_anns.get(img_id, []):
+        # only use annotations that are in our disease map
+        cat3 = ann["category_id_3"]
+        if cat3 not in disease_map:
+            continue
+        class_id = disease_map[cat3]
+        # convert coco bbox [xmin, ymin, w, h] to yolo format
+        bbox = ann["bbox"]
+        xmin, ymin, bw, bh = bbox
+        x_center = (xmin + bw/2) / width
+        y_center = (ymin + bh/2) / height
+        w_norm = bw / width
+        h_norm = bh / height
+        line = f"{class_id} {x_center:.6f} {y_center:.6f} {w_norm:.6f} {h_norm:.6f}"
+        yolo_lines.append(line)
+    if yolo_lines:
+        label_file = os.path.join(target_dir, f"{base_name}.txt")
+        with open(label_file, "w") as f:
+            f.write("\n".join(yolo_lines))
+
+# create sets of image file names for training and validation
+train_file_names = set(os.path.basename(f) for f in train_files)
+val_file_names = set(os.path.basename(f) for f in val_files)
+
+# generate label files for the training and validation sets
+train_labels_dir = os.path.join(yolo_base, "labels", "train")
+val_labels_dir = os.path.join(yolo_base, "labels", "val")
+
+for img_id, (file_name, width, height) in id_to_img.items():
+    if file_name in train_file_names:
+        write_label_for_image(img_id, train_labels_dir)
+    elif file_name in val_file_names:
+        write_label_for_image(img_id, val_labels_dir)
+
+print("annotation conversion to yolo format complete.")
+
