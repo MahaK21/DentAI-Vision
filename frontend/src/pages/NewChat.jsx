@@ -4,6 +4,7 @@ import Navbar from "../Navbar"
 
 import { startConversation } from "../scripts/Convo"
 import { useState, useRef } from "react"
+import { useNavigate } from "react-router-dom"
 
 
 const NewChat = () => {
@@ -11,10 +12,18 @@ const NewChat = () => {
 	const [file, setFile] = useState(null)
 	const [prompt, setPrompt] = useState("")
 
+	const navigate = useNavigate();
+
 	const inputField = useRef(null);
 
 	const handleClick = (event) => {
 		inputField.current.click();
+	}
+
+	function startNewChat(file, prompt) {
+	
+		const resp = startConversation(file, prompt)
+		navigate("/chat");
 	}
 
   return (
@@ -57,19 +66,11 @@ const NewChat = () => {
 			/>
 
 		  { /* When we click this, we need to get the data from the text field and the image */}
-          <button className="send-button" onClick={() => startConversation(file, prompt)}>Send</button>
+          <button className="send-button" onClick={() => startNewChat(file, prompt)}>Send</button>
         </div>
       </main>
     </div>
   )
-}
-
-function handleSubmit() {
-	const text = document.getElementById("chat-input")
-	console.log(text)
-
-
-	startConversation(null, text.value)
 }
 
 export default NewChat
