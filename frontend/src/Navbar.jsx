@@ -23,7 +23,7 @@ const Navbar = () => {
 			{/* TODO: Use react-router for routing. */}
           <NavItem link="/">Home</NavItem>
           <NavItem link="/about" >About DentAI</NavItem>
-          <NavItem link="/chat">Chat</NavItem>
+          <NavItem link="/new-chat">Chat</NavItem>
           <NavItem link="/contact">Contact</NavItem>
         </div>
   </nav>

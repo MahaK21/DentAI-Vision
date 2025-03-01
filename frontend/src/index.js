@@ -7,7 +7,8 @@ import './index.css';
 
 // Different pages for routing
 import Homepage from './pages/Homepage';
-import Chatroom from './pages/Chatroom'
+import NewChat from './pages/NewChat';
+import Chatroom from './pages/Chatroom';
 import About from './pages/About';
 import Page404 from './pages/PageNotFound';
 
@@ -22,7 +23,8 @@ export default function App() {
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<Homepage />}></Route>
-      <Route path="/chat" element={<Chatroom/>}></Route> { /* change URL to new name?*/}
+      <Route path="/new-chat" element={<NewChat/>}></Route>
+      <Route path="/chat" element={<Chatroom/>}></Route>
       <Route path="/about" element={<About />}></Route>
       <Route path="*" element={<Page404 />}></Route>
     </Routes>

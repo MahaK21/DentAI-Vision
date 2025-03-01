@@ -21,7 +21,7 @@ const Homepage = () => {
         <h2 className="tagline">Improving patient trust, one smile at a time.</h2>
 
         <button className="chat-button">
-          <Link to="/chat">New Chat</Link>
+          <Link to="/new-chat">New Chat</Link>
         </button>
       </main>
     </div>

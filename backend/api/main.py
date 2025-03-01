@@ -7,17 +7,24 @@ FastAPI server that connects the model to the frontend.
 '''
 from fastapi import FastAPI, UploadFile, File
 from chatbot import get_chat_response
-from inference import run_model
+#from inference import run_model
 import io
 import cv2
 import numpy as np
 
 app = FastAPI()
 
+@app.get("/")
+async def root():
+    return({"message": "Hello from da backend!"})
+
 @app.post("/predict/")
 async def predict(file: UploadFile = File(...)):
     contents = await file.read()
-    image = np.array(cv2.imdecode(np.frombuffer(contents, np.uint8), -1))
+    #image = np.array(cv2.imdecode(np.frombuffer(contents, np.uint8), -1))
+    print(file.filename)
+    print("Hello from the backend!")
+    return {"upload": file.filename}
     
     results = run_model(image)
     return {"detections": results}

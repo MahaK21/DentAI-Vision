@@ -1,0 +1,146 @@
+/* Reset and base styles */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+	  "Helvetica Neue", sans-serif;
+  }
+  
+  body {
+	background-color: #ffffff;
+  }
+  
+  /* App Container */
+  .app-container {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+  }
+  
+  /* Navigation */
+  .navigation {
+	background-color: #6b86d3;
+	color: white;
+	padding: 16px;
+  }
+  
+  .nav-container {
+	display: flex;
+	justify-content: center;
+	max-width: 1200px;
+	margin: 0 auto;
+  }
+  
+  .nav-link {
+	color: white;
+	text-decoration: none;
+	font-weight: bold;
+	font-size: 20px;
+	margin: 0 24px;
+  }
+  
+  /* Main Content */
+  .main-content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 48px 16px;
+  }
+  
+  .main-heading {
+	color: #1a2775;
+	font-size: 40px;
+	font-weight: bold;
+	margin-bottom: 48px;
+  }
+  
+  /* Upload Button */
+  .upload-button {
+	background-color: #6b86d3;
+	color: white;
+	border: none;
+	border-radius: 9999px;
+	padding: 16px 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	width: 100%;
+	max-width: 400px;
+	margin-bottom: 16px;
+	cursor: pointer;
+	font-size: 18px;
+	font-weight: 500;
+  }
+  
+  .camera-icon {
+	width: 24px;
+	height: 24px;
+  }
+  
+  .helper-text {
+	color: #9a9999;
+	margin-bottom: 48px;
+  }
+  
+  /* Chat Input */
+  .chat-input-container {
+	width: 100%;
+	max-width: 768px;
+	display: flex;
+	gap: 16px;
+  }
+  
+  .chat-input {
+	flex: 1;
+	padding: 16px;
+	border-radius: 9999px;
+	background-color: #d5def8;
+	color: #1a2775;
+	border: none;
+	font-size: 16px;
+  }
+  
+  .chat-input::placeholder {
+	color: rgba(107, 134, 211, 0.7);
+  }
+  
+  .chat-input:focus {
+	outline: none;
+  }
+  
+  .send-button {
+	background-color: #6b86d3;
+	color: white;
+	border: none;
+	border-radius: 9999px;
+	padding: 12px 32px;
+	font-weight: 500;
+	cursor: pointer;
+	font-size: 16px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+	.nav-link {
+	  font-size: 16px;
+	  margin: 0 12px;
+	}
+  
+	.main-heading {
+	  font-size: 32px;
+	}
+  
+	.chat-input-container {
+	  flex-direction: column;
+	}
+  
+	.send-button {
+	  align-self: flex-end;
+	}
+  }
+  
+  
