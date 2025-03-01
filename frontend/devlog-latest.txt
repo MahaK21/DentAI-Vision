@@ -1,0 +1,12 @@
+02-27-25:
+- Setup routing using React Router
+- Setup base HTML for About Us
+- Implemented Navbar on all pages*
+
+Todo:
+- Figure out how Chatroom works + how to make it dynamic
+- Setup chatroom for backend integration.
+	- Image upload, send to server, response handling, etc.
+- Fix Navbar not showing up in Chatroom
+- CSS Styles and Team Member Grid for About Us
+- CSS Styles for 404 Page

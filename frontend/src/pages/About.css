@@ -1,0 +1,28 @@
+h1 {
+	color: blue;
+}
+
+.teamData {
+	display: grid;
+	/*flex-direction: row;*/
+	list-style: none;
+}
+
+.teamData .member {
+	width: 32%;
+}
+
+.member {
+	padding: 10px 10px 10px 10px;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+.member > h2{
+	margin: 5px 0px 0px 0px;
+}
+
+.details > h4{
+	margin: 5px 0px 0px 0px;
+}
+

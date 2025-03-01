@@ -1,0 +1,136 @@
+:root {
+	--color-primary: #1a2775;
+	--color-primary-light: #6b86d3;
+	--color-primary-lighter: #95ace5;
+	--color-primary-lightest: #d5def8;
+	--color-gray: #9a9999;
+	--color-white: #ffffff;
+  }
+  
+  .chat-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 1rem;
+	background-color: var(--color-white);
+	min-height: 100vh;
+  }
+  
+  .chat-title {
+	font-size: 2.5rem;
+	font-weight: bold;
+	color: var(--color-primary);
+	text-align: center;
+	margin-bottom: 2rem;
+  }
+  
+  .messages-container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin-bottom: 5rem;
+  }
+  
+  .message-wrapper {
+	display: flex;
+	width: 100%;
+  }
+  
+  .message-wrapper.user-message {
+	justify-content: flex-end;
+  }
+  
+  .message-wrapper.ai-message {
+	justify-content: flex-start;
+  }
+  
+  .message-bubble {
+	max-width: 80%;
+	padding: 1rem;
+	border-radius: 1rem;
+  }
+  
+  .user-message .message-bubble {
+	background-color: var(--color-primary-lighter);
+	color: var(--color-white);
+  }
+  
+  .ai-message .message-bubble {
+	background-color: var(--color-primary-lightest);
+	color: var(--color-primary);
+  }
+  
+  .message-text {
+	margin: 0;
+	font-size: 1rem;
+	line-height: 1.5;
+  }
+  
+  .message-timestamp {
+	margin: 0.25rem 0 0;
+	font-size: 0.875rem;
+	color: var(--color-gray);
+  }
+  
+  .input-form {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 1rem;
+	background-color: var(--color-white);
+	border-top: 1px solid var(--color-primary-lightest);
+	display: flex;
+	gap: 0.5rem;
+	max-width: 800px;
+	margin: 0 auto;
+  }
+  
+  .message-input {
+	flex: 1;
+	padding: 0.75rem;
+	border: 1px solid var(--color-primary-light);
+	border-radius: 0.75rem;
+	font-size: 1rem;
+	resize: none;
+	outline: none;
+  }
+  
+  .message-input:focus {
+	border-color: var(--color-primary);
+  }
+  
+  .send-button {
+	padding: 0.75rem 2rem;
+	background-color: var(--color-primary-light);
+	color: var(--color-white);
+	border: none;
+	border-radius: 0.75rem;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+  }
+  
+  .send-button:hover {
+	background-color: var(--color-primary);
+  }
+  
+  /* Add some basic responsive styles */
+  @media (max-width: 640px) {
+	.chat-title {
+	  font-size: 2rem;
+	}
+  
+	.message-bubble {
+	  max-width: 90%;
+	}
+  
+	.input-form {
+	  padding: 0.75rem;
+	}
+  
+	.send-button {
+	  padding: 0.75rem 1.5rem;
+	}
+  }
+  
+  

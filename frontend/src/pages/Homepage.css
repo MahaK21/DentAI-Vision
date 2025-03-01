@@ -1,0 +1,124 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  min-height: 100vh;
+  background-color: white;
+}
+
+.nav {
+  background-color: #6b86d3;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+}
+
+.nav-item {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.nav-item:hover {
+  opacity: 0.8;
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-card {
+  width: 100%;
+  max-width: 900px;
+  background-color: #6b86d3;
+  border-radius: 2rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  margin-bottom: 3rem;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.mascot-container {
+  width: 8rem;
+  height: 8rem;
+}
+
+.mascot {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.hero-title {
+  color: white;
+  font-size: 4.5rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.tagline {
+  color: #1a2775;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.chat-button {
+  background-color: #95ace5;
+  color: white;
+  font-size: 1.875rem;
+  font-weight: bold;
+  padding: 1.25rem 4rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.chat-button:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .nav-content {
+    gap: 2rem;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+  }
+
+  .tagline {
+    font-size: 1.8rem;
+  }
+
+  .chat-button {
+    font-size: 1.5rem;
+    padding: 1rem 3rem;
+  }
+}
+
