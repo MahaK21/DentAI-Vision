@@ -3,10 +3,13 @@ A webpage with a brief overview of our project and team.
 */
 import "./About.css"
 import Navbar from "../Navbar"
-const TeamMember = ({name, role, program}) => (
-	<div className="member">
-		<h2>{name}</h2>
+const TeamMember = ({name, role, program, row, img}) => (
+	<div className="member" row={row}>
+		<div className="img">
+			<img src={`/assets/${img}`}></img>
+		</div>
 		<div className="details">
+			<h2>{name}</h2>
 			<h4>{program}</h4>
 			<h4>{role}</h4>
 		</div>
@@ -18,22 +21,24 @@ export default function About() {
 	<div>
 		<Navbar/>
 		<div className="info">
-			<h1>What is DentAI?</h1>
-			<p>DentAI uses machine learning algorithms to detect cavities in X-Ray images. Our goal is to help patients feel confident in their dentist's diagnosis.
+			<section>
+				<h1>What is DentAI?</h1>
+				<p>DentAI uses machine learning algorithms to detect cavities in X-Ray images. Our goal is to help patients feel confident in their dentist's diagnosis.
 				Let's write more about it down here.</p>
-		</div>
-		<div className="teamInfo">
-			<h1>Our Team</h1>
-			<ul className="teamData">
-				<li><TeamMember name="Maha Kesibi" role="Project Manager" program="Computing"></TeamMember></li>
-				<li><TeamMember name="Kamran Jornacion" role="Design Team Member" program="Applied Math Engineering"></TeamMember></li>
-				<li><TeamMember name="Kanika Poonia" role="Design Team Member" program="Computing"></TeamMember></li>
-				<li><TeamMember name="Fouad Saffar" role="Design Team Member" program="Computer Engineering"></TeamMember></li>
-				<li><TeamMember name="Leila Salem" role="Design Team Member" program="Computing"></TeamMember></li>
-				<li><TeamMember name="Het Buddhev" role="Design Team Member" program="Computer Engineering"></TeamMember></li>
-				<li><TeamMember name="Elliott Vince" role="Design Team Member" program="Computing"></TeamMember></li>
-
-			</ul>
+			</section>
+			<section>
+				<h1>Our Team</h1>
+				<div className="teamInfo">
+					<TeamMember className="row1"name="Maha Kesibi" role="Project Manager" program="Computing" img="Maha.png" row={1}></TeamMember>
+					<TeamMember className="row1" name="Kamran Jornacion" role="Design Team Member" program="Applied Math Engineering" img="Kamram.png" row={1}></TeamMember>
+					<TeamMember className="row1" name="Kanika Poonia" role="Design Team Member" program="Computing" row={1} img="Kanika.png"></TeamMember>
+					<TeamMember className="row1" name="Fouad Saffar" role="Design Team Member" program="Computer Engineering" img="Fouad.png" row={1}></TeamMember>
+					<TeamMember className="row2" name="Leila Salem" role="Design Team Member" program="Computing" row={2} img="Leila.png"></TeamMember>
+					<TeamMember className="row2" name="Het Buddhev" role="Design Team Member" program="Computer Engineering" img="Het.png" row={2}></TeamMember>
+					<TeamMember className="row2" name="Elliott Vince" role="Design Team Member" program="Computing" row={2} img="Elliott.png"></TeamMember>
+				</div>
+			</section>
+			
 		</div>
 	</div>
 	)

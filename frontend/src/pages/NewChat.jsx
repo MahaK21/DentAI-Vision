@@ -25,6 +25,14 @@ const NewChat = () => {
 		const resp = startConversation(file, prompt)
 		navigate("/chat");
 	}
+  
+  function getStatusMsg() {
+    if (file) {
+      return "Uploaded: " + file.name;
+    }
+
+    return "Upload an X-Ray photo to get started."
+  }
 
   return (
     <div className="app-container">
@@ -55,7 +63,7 @@ const NewChat = () => {
         </button>
 		<input type="file" ref={inputField} onChange={e => setFile(e.target.files[0])} style={{display: "none"}}></input>
 
-        <p className="helper-text">Upload an X-Ray photo to get started.</p>
+        <p className="helper-text">{getStatusMsg()}</p>
 
         {/* Chat Input */}
         <div className="chat-input-container">

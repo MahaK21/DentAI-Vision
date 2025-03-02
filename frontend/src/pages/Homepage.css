@@ -59,6 +59,11 @@ body {
   padding: 2rem;
 }
 
+.chat-button > a { /* Styles for the embedded Link object in the button */
+  color: white;
+  text-decoration: none;
+}
+
 .mascot-container {
   width: 8rem;
   height: 8rem;

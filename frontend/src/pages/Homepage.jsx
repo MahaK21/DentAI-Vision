@@ -1,9 +1,12 @@
 import "./Homepage.css"
 
 import Navbar from "../Navbar"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const Homepage = () => {
+
+  const navigate = useNavigate()
+
   return (
     <div className="container">
       <Navbar/>
@@ -20,9 +23,7 @@ const Homepage = () => {
 
         <h2 className="tagline">Improving patient trust, one smile at a time.</h2>
 
-        <button className="chat-button">
-          <Link to="/new-chat">New Chat</Link>
-        </button>
+        <button className="chat-button" onClick={() => navigate("/new-chat")}>New Chat</button>
       </main>
     </div>
   )

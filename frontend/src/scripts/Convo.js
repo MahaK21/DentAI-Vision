@@ -43,6 +43,7 @@ export async function startConversation(imageFile, prompt) {
         let chatData = await response.json();
         console.log("Chatbot Response:", chatData.response);
 
+		{ /* */ }
         return chatData.response;
 
     } catch (error) {

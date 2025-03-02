@@ -1,28 +1,104 @@
-h1 {
-	color: blue;
+@import url(../index.css);
+
+section h1, h2 {
+	text-align: center;
+	color: var(--color-primary);
 }
 
-.teamData {
+section :not(h1, h2) {
+	color: var(--color-primary-text);
+}
+
+section {
+	padding: 2%;
+}
+
+h1 {
+	font-size: 36px;
+}
+
+/* ---- Styles for member cards ---- */
+
+.teamInfo {
 	display: grid;
 	/*flex-direction: row;*/
-	list-style: none;
+	grid-template-rows: 1fr 1fr;
+	grid-template-columns: repeat(12, 1fr);
+
+	/* This aligns the items in each grid box.*/
+	text-align: center;
+	align-items: center;
 }
 
-.teamData .member {
-	width: 32%;
+.teamInfo .img {
+	background-color: #d5def8;
+	width: 200px;
+	height: 200px;
+	border-radius: 100%;
+	align-items: center;
+
 }
 
-.member {
-	padding: 10px 10px 10px 10px;
+img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	border-radius: 100%;
+}
+
+/* .teamInfo {
+	
+}
+
+.teamInfo .row1 {
+	grid-column: span 3;
+	padding: 5%; /* TODO: Restructure divs to avoid copying code.*/
+	/* display: flex;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
+}
+
+.teamInfo .row2 {
+	grid-column: span 4;
+	padding: 5%;
 	display: flex;
 	flex-direction: column;
 	text-align: center;
-}
-.member > h2{
-	margin: 5px 0px 0px 0px;
+	align-items: center;
+} */
+
+/* Regardless of row, all members should have these properties.*/
+.member {
+	padding: 5%;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	align-items: center;
 }
 
-.details > h4{
-	margin: 5px 0px 0px 0px;
+.details {
+	padding: 8px;
 }
+.details > h2 {
+	margin: 10px 0px 0px 0px;
+	padding: 0px 0px 5px 0px;
+}
+
+.details > h4 {
+	margin: 2px 0px 0px 0px;
+}
+
+.member[row="1"] {
+	grid-column: span 3;
+}
+
+.member[row="2"] {  /* This notation allows us to define custom selectors. Yay!*/
+	grid-column: span 4;
+}
+
+/* ---- ---- */
+
+
+
 
