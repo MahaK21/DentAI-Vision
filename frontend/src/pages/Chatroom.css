@@ -36,17 +36,23 @@
   }
   
   .message-wrapper.user-message {
-	justify-content: flex-end;
+	justify-content: flex-end; /* Pushes content to the right of the message pane. */
   }
   
   .message-wrapper.ai-message {
-	justify-content: flex-start;
+	justify-content: flex-start; /* Pushes content to the left of the message pane. */
   }
   
   .message-bubble {
 	max-width: 80%;
 	padding: 1rem;
 	border-radius: 1rem;
+  }
+
+  .message-bubble img {
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
   }
   
   .user-message .message-bubble {

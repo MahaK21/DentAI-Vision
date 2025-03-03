@@ -2,7 +2,6 @@ import "./NewChat.css"
 
 import Navbar from "../Navbar"
 
-import { startConversation } from "../scripts/Convo"
 import { useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -21,9 +20,7 @@ const NewChat = () => {
 	}
 
 	function startNewChat(file, prompt) {
-	
-		const resp = startConversation(file, prompt)
-		navigate("/chat");
+		navigate("/chat", {state: {image: file, text: prompt, time: Date.now()}});
 	}
   
   function getStatusMsg() {

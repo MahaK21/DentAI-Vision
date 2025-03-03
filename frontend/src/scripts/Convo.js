@@ -47,7 +47,7 @@ export async function startConversation(imageFile, prompt) {
         return chatData.response;
 
     } catch (error) {
-        console.error("Error in startConversation:", error);
-        return "An error occurred. Please try again.";
+        //console.error("Error in startConversation:", error);
+        return {"error": "Could not connect to the chatbot. Please try again later."};
     }
 }
