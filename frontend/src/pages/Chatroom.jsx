@@ -1,7 +1,7 @@
 //"use client" <- not sure why this line is here
 
-import { useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { useLocation} from "react-router-dom"
 import "./Chatroom.css"
 
 import { startConversation } from "../scripts/Convo"
@@ -31,13 +31,17 @@ class ChatMessage {
 
 function formatTime(timeMs) {
 
-  const date = new Date(timeMs);
-  return date.toLocaleTimeString("en-CA");
+  return null;
+  // const date = new Date(timeMs);
+  // return date.toLocaleTimeString("en-CA");
 }
 
-
-
 export default function Chatroom() {
+  /*
+
+  */
+
+  console.log("jeffrey hello");
 
   // state of object (so we can get the data from NewChat)
   const {state} = useLocation();
@@ -49,14 +53,24 @@ export default function Chatroom() {
   }
 
   // Array of messages for AI and user convo
-  const [messages] = useState( [firstMessage, {"type": "waiting"}] )
+  const [messages, setMessages] = useState([
+    firstMessage,
+    new ChatMessage(1, "...", "ai", null)
+  ])
 
   const [inputValue, setInputValue] = useState("")
 
+
   // Contacts the chatbot with the first message (on load)
+  useEffect(() => {
+    startConversation(state.image, state.text).then(text => {
+      // Update the message text.
 
-  const resp = startConversation(state.file, state.text);
-
+      console.log("response: " + text);
+      console.log(text);
+      messages[messages.length - 1].text = text.error;
+    });
+  }, []);
 
 
   const handleSubmit = (e) => {
@@ -72,13 +86,18 @@ export default function Chatroom() {
     // TODO: Send chatbot message to backend.
 
     setInputValue("")
-    console.log(state);
   }
 
   function buildMessage(message) {
     if (message.type == "waiting"){
       // TODO: Add special waiting bubble (with animation?)
-      return <h1>Waiting...</h1>
+      return (
+        <div className="message-wrapper waiting">
+          <div className="message-bubble">
+            <p>...</p>
+          </div>
+        </div>
+      );
     }
     else {
       return (
@@ -86,14 +105,18 @@ export default function Chatroom() {
               key={message.id}
               className={`message-wrapper ${message.sender === "user" ? "user-message" : "ai-message"}`}
             >
-              <div className="message-bubble">
-                { message.image && (
-                  <img src={URL.createObjectURL(message.image)}></img>
-                )}
+            <div className="message-bubble">
+              { message.image && (
+                <img src={URL.createObjectURL(message.image)}></img>
+              )}
+              {message.text && (
                 <p className="message-text">{message.text}</p>
+              )}
+              {message.time && (
                 <p className="message-timestamp">{message.time}</p>
-              </div>
+              )}
             </div>
+        </div>
       )
     }
   }
@@ -107,7 +130,22 @@ export default function Chatroom() {
 
         <div className="messages-container">
           {messages.map((message) => (
-            buildMessage(message)
+            <div
+            key={message.id}
+            className={`message-wrapper ${message.sender === "user" ? "user-message" : "ai-message"}`}
+            >
+              <div className="message-bubble">
+              { message.image && (
+                <img src={URL.createObjectURL(message.image)}></img>
+              )}
+              {message.text && (
+                <p className="message-text">{message.text}</p>
+              )}
+              {message.time && (
+                <p className="message-timestamp">{message.time}</p>
+              )}
+              </div>
+            </div>
           ))}
       </div>
       <form onSubmit={handleSubmit} className="input-form">
