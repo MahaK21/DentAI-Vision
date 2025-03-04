@@ -51,3 +51,35 @@ export async function startConversation(imageFile, prompt) {
         return {"error": "Could not connect to the chatbot. Please try again later."};
     }
 }
+export async function chatWithChatbot(message, previousDetections) {
+    console.log(`User: ${message}`);
+
+    try {
+        let response = await fetch("http://127.0.0.1:8000/chat/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: message, // User's message
+                detections: previousDetections // Previous YOLOv5 results
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("Error getting chatbot response");
+        }
+		
+		console.log('Now the chatbot is talking')
+        let chatData = await response.json();
+        //console.log("Chatbot Response:", chatData.response);
+		
+
+        return chatData.response;
+    } catch (error) {
+        console.error("Error in chatWithChatbot:", error);
+        return  "Could not connect to the chatbot. Please try again later." ;
+    }
+}
+
+

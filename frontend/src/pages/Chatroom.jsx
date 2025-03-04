@@ -1,10 +1,12 @@
 //"use client" <- not sure why this line is here
 
-import { useState, useEffect } from "react"
-import { useLocation} from "react-router-dom"
+import { useState } from "react"
+import { useLocation } from "react-router-dom"
+import { useEffect } from "react";
 import "./Chatroom.css"
 
 import { startConversation } from "../scripts/Convo"
+import { chatWithChatbot } from "../scripts/Convo";
 
 import Navbar from "../Navbar"
 
@@ -53,6 +55,10 @@ export default function Chatroom() {
   }
 
   // Array of messages for AI and user convo
+  //const [messages] = useState( [firstMessage, {"type": "waiting"}] )
+  //const [previousDetections, setPreviousDetections] = useState([]); // Store YOLOv5 results
+ // const [messages, setMessages] = useState([firstMessage, { "type": "waiting" }]);
+
   const [messages, setMessages] = useState([
     firstMessage,
     new ChatMessage(1, "...", "ai", null)
@@ -66,27 +72,74 @@ export default function Chatroom() {
     startConversation(state.image, state.text).then(text => {
       // Update the message text.
 
-      console.log("response: " + text);
-      console.log(text);
-      messages[messages.length - 1].text = text.error;
-    });
-  }, []);
+
+  
+//   useEffect(() => {
+//     if (state.file || state.text) {
+//         console.log("Uploading image...");
+//         startConversation(state.file, state.text).then(response => {
+//             console.log("Chatbot Response:", response);
+//             // TODO: Update messages state with chatbot response
+//         });
+//     }
+// }, []); // Empty dependency array means this runs **only once** on page load
+useEffect(() => {
+  if (state.file || state.text) {
+      console.log("Uploading image...");
+      startConversation(state.file, state.text).then(response => {
+          console.log("Chatbot Response:", response);
+
+          // // Save detections for future chats
+          // setPreviousDetections(response.detections || []);
+
+          // // Add chatbot response to messages
+          // setMessages(prevMessages => [
+          //     ...prevMessages.slice(0, -1), // Remove "waiting" message
+          //     new ChatMessage(messages.length, response, "ai", Date.now())
+      //     ]);
+      });
+  }
+}, []);
 
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!inputValue.trim()) return
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
+  //   if (!inputValue.trim()) return
     
-    // Upload the message to the UI
+  //   // Upload the message to the UI
+  //   let index = messages.length;
+  //   const msg = new ChatMessage(index, inputValue, "user", Date.now());
+
+  //   messages[index] = msg;
+
+  //   // TODO: Send chatbot message to backend.
+
+  //   setInputValue("")
+  //   console.log(state);
+  // }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!inputValue.trim()) return;
+
+    // Add user message to UI
     let index = messages.length;
     const msg = new ChatMessage(index, inputValue, "user", Date.now());
+    setMessages(prevMessages => [...prevMessages, msg, { "type": "waiting" }]);
 
-    messages[index] = msg;
+    // Send message to chatbot using previous detections
+    const response = await chatWithChatbot(inputValue, previousDetections);
+    
+    setMessages(prevMessages => [
+        ...prevMessages.slice(0, -1), // Remove "waiting" message
+        new ChatMessage(messages.length + 1, response, "ai", Date.now())
+    ]);
 
-    // TODO: Send chatbot message to backend.
+    setInputValue(""); // Clear input box
+};
 
-    setInputValue("")
-  }
+    
 
   function buildMessage(message) {
     if (message.type == "waiting"){
