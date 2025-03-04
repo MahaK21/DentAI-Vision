@@ -1,3 +1,7 @@
+/*
+Outstanding Bugs: Chatroom is using styles from About.css (causing border-radius: 100%). Why? Fix lol
+*/
+
 :root {
 	--color-primary: #1a2775;
 	--color-primary-light: #6b86d3;
@@ -63,6 +67,13 @@
   .ai-message .message-bubble {
 	background-color: var(--color-primary-lightest);
 	color: var(--color-primary);
+  }
+
+  .waiting .message-bubble {
+	background-color: var(--color-primary-lightest);
+	color: var(--color-primary);
+	width: 10%;
+	font-size: 32px;
   }
   
   .message-text {
