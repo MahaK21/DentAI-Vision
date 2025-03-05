@@ -34,10 +34,6 @@ def load_dental_documents(directory: str) -> List[Document]:
 # MODIFY AND ADD PATH TO FOLDER CONTAINING TEXT FILE - Memory
 dental_documents = load_dental_documents(r"chatbot/dental_mem")
 
-
-
-
-
 def simple_retriever(query: str, documents: List[Document], top_k: int = 3) -> List[Document]:
     # rank documents based on keyword matches in title and content, skip if title has no match
     query_lower = query.lower()
