@@ -1,3 +1,6 @@
+# to run this you need : 
+# pip install langchain requests
+
 import os
 import requests
 from typing import Optional, List
@@ -27,7 +30,12 @@ def load_dental_documents(directory: str) -> List[Document]:
             documents.append(doc)
     return documents
 
-dental_documents = load_dental_documents(r"C:\Users\hetb0\Desktop\QMIND\Chatbot\dental_mem")
+
+# MODIFY AND ADD PATH TO FOLDER CONTAINING TEXT FILE - Memory
+dental_documents = load_dental_documents(r" -PATH HERE- ")
+
+
+
 
 def simple_retriever(query: str, documents: List[Document], top_k: int = 3) -> List[Document]:
     # rank documents based on keyword matches in title and content, skip if title has no match
