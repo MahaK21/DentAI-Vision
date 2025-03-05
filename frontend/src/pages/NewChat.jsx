@@ -20,6 +20,7 @@ const NewChat = () => {
 	}
 
 	function startNewChat(file, prompt) {
+    // Note: We know the data is valid at this point.
 		navigate("/chat", {state: {image: file, text: prompt, time: Date.now()}});
 	}
   
@@ -28,7 +29,7 @@ const NewChat = () => {
       return "Uploaded: " + file.name;
     }
 
-    return "Upload an X-Ray photo to get started."
+    return "Upload a panoramic X-Ray photo to get started."
   }
 
   return (

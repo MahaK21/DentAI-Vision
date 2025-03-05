@@ -7,6 +7,8 @@ export async function startConversation(imageFile, prompt) {
 
     // Prepare FormData for image upload
     const formData = new FormData();
+    console.log(imageFile);
+    console.log(typeof(imageFile));
     formData.append("file", imageFile);
 
     try {
@@ -22,6 +24,7 @@ export async function startConversation(imageFile, prompt) {
 
         let data = await response.json();
         console.log("Detection Results:", data);
+        console.log(data);
 
         // Step 2: Send detections + user prompt to Chatbot API
         console.log(`Sending results to chatbot...`);

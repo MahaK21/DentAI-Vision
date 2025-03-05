@@ -43,8 +43,6 @@ export default function Chatroom() {
 
   */
 
-  console.log("jeffrey hello");
-
   // state of object (so we can get the data from NewChat)
   const {state} = useLocation();
   
@@ -66,27 +64,18 @@ export default function Chatroom() {
 
   const [inputValue, setInputValue] = useState("")
 
+  const [previousDetections, setPreviousDetections] = useState([]);
+
 
   // Contacts the chatbot with the first message (on load)
-  useEffect(() => {
-    startConversation(state.image, state.text).then(text => {
-      // Update the message text.
-
-
-  
-//   useEffect(() => {
-//     if (state.file || state.text) {
-//         console.log("Uploading image...");
-//         startConversation(state.file, state.text).then(response => {
-//             console.log("Chatbot Response:", response);
-//             // TODO: Update messages state with chatbot response
-//         });
-//     }
-// }, []); // Empty dependency array means this runs **only once** on page load
 useEffect(() => {
-  if (state.file || state.text) {
+
+  if (!state) return
+
+  if (state.image || state.text) {
       console.log("Uploading image...");
-      startConversation(state.file, state.text).then(response => {
+
+      startConversation(state.image, state.text).then(response => {
           console.log("Chatbot Response:", response);
 
           // // Save detections for future chats
@@ -99,7 +88,8 @@ useEffect(() => {
       //     ]);
       });
   }
-}, []);
+  // want {state} to exist before we send.
+}, [state.image, state.text]);
 
 
 
