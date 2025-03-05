@@ -106,7 +106,7 @@ class SimpleDeepSeekConversationChain:
             final_response = response.strip()
         return final_response
 
-DEEPSEEK_API_KEY = "sk-d81ec57234594cfcb4a46063914c4c71"
+DEEPSEEK_API_KEY = "<Add API key here>" 
 deepseek_llm = DeepSeekChat(api_key=DEEPSEEK_API_KEY)
 
 memory = ConversationBufferMemory(memory_key="history", return_messages=True)
