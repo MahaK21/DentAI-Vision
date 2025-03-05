@@ -32,7 +32,8 @@ def load_dental_documents(directory: str) -> List[Document]:
 
 
 # MODIFY AND ADD PATH TO FOLDER CONTAINING TEXT FILE - Memory
-dental_documents = load_dental_documents(r" -PATH HERE- ")
+dental_documents = load_dental_documents(r"chatbot/dental_mem")
+
 
 
 
@@ -106,7 +107,7 @@ class SimpleDeepSeekConversationChain:
             final_response = response.strip()
         return final_response
 
-DEEPSEEK_API_KEY = "<Add API key here>" 
+DEEPSEEK_API_KEY = "sk-76ca8a646b09496aadcc04c0a387136b"
 deepseek_llm = DeepSeekChat(api_key=DEEPSEEK_API_KEY)
 
 memory = ConversationBufferMemory(memory_key="history", return_messages=True)
