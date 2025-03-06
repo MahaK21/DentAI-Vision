@@ -8,29 +8,53 @@ This script contains the code to run the YOLO models on the input image and retu
 import torch
 import cv2
 import numpy as np
+from pathlib import Path
 
-# Load YOLO models
-caries_model = torch.hub.load('ultralytics/yolov5', 'custom', path='../models/yolov5_caries.pt')
-teeth_model = torch.hub.load('ultralytics/yolov5', 'custom', path='../models/yolov5_teeth.pt')
+# Path to the trained model
+MODEL_PATH = Path("model/dentai_yolov5s/weights/best.pt")
 
-def run_model(image):
-    teeth_results = teeth_model(image)
-    caries_results = caries_model(image)
+# Load the YOLOv5 model
+model = torch.hub.load("ultralytics/yolov5", "custom", path=MODEL_PATH, force_reload=True)
 
-    teeth_boxes = teeth_results.pandas().xyxy[0].to_dict(orient="records")
-    caries_boxes = caries_results.pandas().xyxy[0].to_dict(orient="records")
+model.conf = 0.25  # Confidence threshold
+model.iou = 0.45   # IOU threshold
 
-    # Match disease detections to specific teeth using IoU
-    for caries in caries_boxes:
-        for tooth in teeth_boxes:
-            if iou([tooth['xmin'], tooth['ymin'], tooth['xmax'], tooth['ymax']], 
-                   [caries['xmin'], caries['ymin'], caries['xmax'], caries['ymax']]) > 0.5:
-                caries['tooth_number'] = tooth['name']
+def run_model(image_input):
+    """
+    Runs YOLOv5 on the input image and returns the labeled image.
 
-    return caries_boxes  # Return merged results
+    Args:
+        image_input (str or np.array): File path or NumPy array of the image.
 
-def iou(box1, box2):
-    x1, y1, x2, y2 = box1
-    x3, y3, x4, y4 = box2
-    inter_area = max(0, min(x2, x4) - max(x1, x3)) * max(0, min(y2, y4) - max(y1, y3))
-    return inter_area / ((x2-x1)*(y2-y1) + (x4-x3)*(y4-y3) - inter_area)
+    Returns:
+        np.array: Image with bounding boxes drawn.
+    """
+    # If input is a file path, read the image
+    if isinstance(image_input, str):
+        image = cv2.imread(image_input)
+        if image is None:
+            raise ValueError(f"Error loading image from {image_input}. Check the path.")
+    else:
+        image = image_input  # If input is already an image array, use it directly
+
+    # Run inference
+    results = model(image)
+
+    # Check if detections exist
+    if results.xyxy[0].shape[0] == 0:
+        print("No caries detected in the image.")
+        return image  # Return original image if nothing is detected
+
+    # Process results
+    for *xyxy, conf, cls in results.xyxy[0]:  # Iterate over detections
+        label = f"Caries {conf:.2f}"  # Create label with confidence
+        x1, y1, x2, y2 = map(int, xyxy)  # Convert to integer coordinates
+
+        # Draw bounding box
+        cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
+        # Put label above the box
+        cv2.putText(image, label, (x1, max(y1 - 10, 10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+    return image
+
