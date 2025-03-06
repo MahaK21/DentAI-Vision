@@ -9,7 +9,6 @@ from fastapi import FastAPI, UploadFile, File, Response
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from chatbot import get_chat_response
 from inference import run_model
 import io
 import cv2
@@ -17,6 +16,9 @@ import numpy as np
 from starlette.requests import Request
 
 import tempfile
+
+# Importing issue here
+from chatbot.deep_chatbot import Chatbot
 
 
 from pydantic import BaseModel
@@ -31,6 +33,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Create deepseek chatbot
+chatbot = Chatbot()
+print("hello!")
 
 class ChatData(BaseModel):
     message: str
@@ -57,10 +63,12 @@ async def predict(request: Request, file: UploadFile = File(...)):
     print(temp);
     cv2.imwrite(temp.name, processed_img);
 
-    cv2.imwrite("../images/result.jpg", processed_img);
+    #cv2.imwrite("../images/result.jpg", processed_img);
     
-    #_, buffer = cv2.imencode(".jpg", processed_img);
-    #return Response(content=buffer.tobytes(), media_type="image/jpeg")
+    _, buffer = cv2.imencode(".jpg", processed_img);
+
+    return Response(content=buffer.tobytes(), media_type="image/jpeg");
+
     return FileResponse(temp.name, media_type="image/jpeg");
    # return {"detections": results}
 
@@ -70,8 +78,9 @@ async def chat(body: ChatData):
     print(f"message: {body.message}")
     print(f"detections: {body.detections}")
     
-    #response = get_chat_response(body.message, body.detections)
-    return {"response": "Hello from the chatbot!"};
+    return {"response": chatbot.respond(body.message)}
+    
+    # Placeholder msg: return {"response": "Hello from the chatbot!"};
     return response;
 
 if __name__ == "__main__":

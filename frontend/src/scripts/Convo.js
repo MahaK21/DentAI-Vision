@@ -21,8 +21,13 @@ export async function startConversation(imageFile, prompt) {
         }
 
         let data = await response;
-        console.log(data);
-        console.log("Detection Results:", data);
+
+        // This is a 'blob' of bytes (stores the file's data)
+        const dBlob = await data.blob();
+        const url = URL.createObjectURL(dBlob);
+
+        // If we want, we can return just the url (for debugging)... this will get the image working.
+        //return url;
 
         // Step 2: Send detections + user prompt to Chatbot API
         console.log(`Sending results to chatbot...`);

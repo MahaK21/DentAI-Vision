@@ -39,9 +39,8 @@ function formatTime(timeMs) {
 }
 
 export default function Chatroom() {
-  /*
-
-  */
+  
+  const [results, setResults] = useState(null);
 
   // state of object (so we can get the data from NewChat)
   const {state} = useLocation();
@@ -76,7 +75,9 @@ useEffect(() => {
       console.log("Uploading image...");
 
       startConversation(state.image, state.text).then(response => {
-          console.log("Chatbot Response:", response);
+          console.log("Chatbot Response:");
+          console.log(response);
+          setResults(response);
 
           // // Save detections for future chats
           // setPreviousDetections(response.detections || []);
@@ -190,6 +191,10 @@ useEffect(() => {
               </div>
             </div>
           ))}
+
+          { /* Temporary placeholder for image results!*/}
+          
+          {results && <img src={results}></img>}
       </div>
       <form onSubmit={handleSubmit} className="input-form">
         <textarea

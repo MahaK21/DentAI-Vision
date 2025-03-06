@@ -103,6 +103,18 @@ class SimpleDeepSeekConversationChain:
             final_response = response.strip()
         return final_response
 
+class Chatbot:
+
+    def __init__(self):
+        self.deepseek = DeepSeekChat("sk-76ca8a646b09496aadcc04c0a387136b") # TODO: Hide api key
+        self.memory = ConversationBufferMemory(memory_key="history", return_messages=True)
+
+        self.convo = SimpleDeepSeekConversationChain(llm=self.deepseek, memory=self.memory, documents=dental_documents)
+    
+    def respond(self, message: str):
+        return conversation.predict(input_text=message)
+    
+    
 DEEPSEEK_API_KEY = "sk-76ca8a646b09496aadcc04c0a387136b"
 deepseek_llm = DeepSeekChat(api_key=DEEPSEEK_API_KEY)
 
