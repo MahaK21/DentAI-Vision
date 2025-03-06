@@ -10,6 +10,12 @@ import Homepage from './pages/Homepage';
 import NewChat from './pages/NewChat';
 import Chatroom from './pages/Chatroom';
 import About from './pages/About';
+
+/*
+Bug: For some reason, this imports and applies each stylesheet to the entire document.
+It applies downward (waterfall). Fix!
+*/
+
 import Page404 from './pages/PageNotFound';
 
 import reportWebVitals from './reportWebVitals';

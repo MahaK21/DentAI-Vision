@@ -5,7 +5,8 @@ main.py
 FastAPI server that connects the model to the frontend.
 
 '''
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Response
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from chatbot import get_chat_response
@@ -14,6 +15,8 @@ import io
 import cv2
 import numpy as np
 from starlette.requests import Request
+
+import tempfile
 
 
 from pydantic import BaseModel
@@ -41,14 +44,25 @@ async def root():
 async def predict(request: Request, file: UploadFile = File(...)):
    # async def predict(file: UploadFile = File(...)):
 
-    print(f"Headers: {request.headers}")
+    print(f"received file: {file.filename}")
 
-    print("doing something!")
     contents = await file.read()
     image = np.array(cv2.imdecode(np.frombuffer(contents, np.uint8), -1))
+    print(len(image))
+
+    print("running da model")
+    processed_img = run_model(image)
+
+    temp = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
+    print(temp);
+    cv2.imwrite(temp.name, processed_img);
+
+    cv2.imwrite("../images/result.jpg", processed_img);
     
-    results = run_model(image)
-    return {"detections": results}
+    #_, buffer = cv2.imencode(".jpg", processed_img);
+    #return Response(content=buffer.tobytes(), media_type="image/jpeg")
+    return FileResponse(temp.name, media_type="image/jpeg");
+   # return {"detections": results}
 
 @app.post("/chat")
 async def chat(body: ChatData):

@@ -7,8 +7,6 @@ export async function startConversation(imageFile, prompt) {
 
     // Prepare FormData for image upload
     const formData = new FormData();
-    console.log(imageFile);
-    console.log(typeof(imageFile));
     formData.append("file", imageFile);
 
     try {
@@ -22,9 +20,9 @@ export async function startConversation(imageFile, prompt) {
             throw new Error("Error uploading image");
         }
 
-        let data = await response.json();
-        console.log("Detection Results:", data);
+        let data = await response;
         console.log(data);
+        console.log("Detection Results:", data);
 
         // Step 2: Send detections + user prompt to Chatbot API
         console.log(`Sending results to chatbot...`);
@@ -50,7 +48,8 @@ export async function startConversation(imageFile, prompt) {
         return chatData.response;
 
     } catch (error) {
-        //console.error("Error in startConversation:", error);
+        
+        console.error("Error in startConversation:", error);
         return {"error": "Could not connect to the chatbot. Please try again later."};
     }
 }

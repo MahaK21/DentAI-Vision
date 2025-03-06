@@ -33,7 +33,7 @@ class ChatMessage {
 
 function formatTime(timeMs) {
 
-  return null;
+  return timeMs;
   // const date = new Date(timeMs);
   // return date.toLocaleTimeString("en-CA");
 }
