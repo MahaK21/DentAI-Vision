@@ -16,3 +16,9 @@ Next Steps:
 	- Give chatbot model some context based on the detections (see chatbot_old.py)
 
 Great work everyone!!
+
+03-07-25:
+
+What we did:
+- Uploaded DentAI logo
+- Added Chatbot intro to NewChat page

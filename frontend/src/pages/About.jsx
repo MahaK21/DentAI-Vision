@@ -30,11 +30,11 @@ export default function About() {
 				<h1>Our Team</h1>
 				<div className="teamInfo">
 					<TeamMember className="row1"name="Maha Kesibi" role="Project Manager" program="Computing" img="Maha.png" row={1}></TeamMember>
-					<TeamMember className="row1" name="Kamran Jornacion" role="Design Team Member" program="Applied Math Engineering" img="Kamram.png" row={1}></TeamMember>
+					<TeamMember className="row1" name="Kamran Jornacion" role="Design Team Member" program="Applied Math Engineering" img="Kamran.png" row={1}></TeamMember>
 					<TeamMember className="row1" name="Kanika Poonia" role="Design Team Member" program="Computing" row={1} img="Kanika.png"></TeamMember>
 					<TeamMember className="row1" name="Fouad Saffar" role="Design Team Member" program="Computer Engineering" img="Fouad.png" row={1}></TeamMember>
 					<TeamMember className="row2" name="Leila Salem" role="Design Team Member" program="Computing" row={2} img="Leila.png"></TeamMember>
-					<TeamMember className="row2" name="Het Buddhev" role="Design Team Member" program="Computer Engineering" img="Het.png" row={2}></TeamMember>
+					<TeamMember className="row2" name="Het Buddhev" role="Design Team Member" program="Computer Engineering" img="Het.jpg" row={2}></TeamMember>
 					<TeamMember className="row2" name="Elliott Vince" role="Design Team Member" program="Computing" row={2} img="Elliott.png"></TeamMember>
 				</div>
 			</section>

@@ -40,6 +40,14 @@ const NewChat = () => {
       <main className="main-content">
         <h1 className="main-heading">Start a New Chat</h1>
 
+        <div className="chat-intro">
+          <div className="intro-message-wrapper">
+            <p className="intro-msg">Hi! I'm DentAI - your dental health assistant. How can I help you today?</p>
+          </div>
+          <img className="intro-logo" src={"./assets/logo.png"}></img>
+
+        </div>
+
         {/* Upload Button */}
         <button className="upload-button" onClick={handleClick}>
           <svg
