@@ -86,4 +86,6 @@ async def chat(body: ChatData):
 
 if __name__ == "__main__":
     import uvicorn
+
+    # Note: server is starting twice because we have default code (see top of this file)
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

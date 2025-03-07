@@ -13,5 +13,6 @@ Next Steps:
 	- Add styling to chatbot response (paragraphs, bold, etc.)
 	- Clickable images (fullscreen preview)
 	- "..." message (+ loading animation)
+	- Give chatbot model some context based on the detections (see chatbot_old.py)
 
 Great work everyone!!
