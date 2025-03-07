@@ -76,17 +76,23 @@ useEffect(() => {
 
       startConversation(state.image, state.text).then(response => {
           console.log("Chatbot Response:");
-          console.log(response);
-          setResults(response);
+          //console.log(response);
+          //setResults(response);
+
+          const explanation = response.explanation;
+          const imageUrl = response.image_url;
+          const detections = response.detections || [];
+
+          setMessages(prevMessages => [
+            ...prevMessages.slice(0, -1), // Remove "waiting" message
+            new ChatMessage(prevMessages.length, explanation, "ai", Date.now()), // Chatbot's response
+            new ChatMessage(prevMessages.length + 1, "", "ai", Date.now()).addImage(imageUrl) // Annotated image
+        ]);
 
           // // Save detections for future chats
           // setPreviousDetections(response.detections || []);
 
-          // // Add chatbot response to messages
-          // setMessages(prevMessages => [
-          //     ...prevMessages.slice(0, -1), // Remove "waiting" message
-          //     new ChatMessage(messages.length, response, "ai", Date.now())
-      //     ]);
+          
       });
   }
   // want {state} to exist before we send.

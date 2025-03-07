@@ -57,15 +57,28 @@ async def predict(request: Request, file: UploadFile = File(...)):
     print(len(image))
 
     print("running da model")
-    processed_img = run_model(image)
+    #processed_img = run_model(image)
+    processed_img, detections = run_model(image)
 
     temp = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
     print(temp);
     cv2.imwrite(temp.name, processed_img);
+    _, buffer = cv2.imencode(".jpg", processed_img);
+
+    detections_text = "\n".join([f"Detection {i+1}: {d}" for i, d in enumerate(detections)])
+
+
+    explanation = chatbot.respond(f"Analyze these dental issues: {detections_text}")
+
+    return {
+        "image_url": f"http://127.0.0.1:8000/image/{temp.name}",
+        "explanation": explanation,
+        "detections": detections  # ✅ Make sure detections are returned
+    }
 
     #cv2.imwrite("../images/result.jpg", processed_img);
     
-    _, buffer = cv2.imencode(".jpg", processed_img);
+   
 
     return Response(content=buffer.tobytes(), media_type="image/jpeg");
 
@@ -86,3 +99,5 @@ async def chat(body: ChatData):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+
+#make sure that the chatbot is working source venv/bin/activate 

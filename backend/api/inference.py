@@ -12,9 +12,14 @@ from pathlib import Path
 
 # Path to the trained model
 MODEL_PATH = Path("model/dentai_yolov5s/weights/best.pt")
+MODELATH = "model/dentai_yolov5s/weights/best.pt"
+
+
 
 # Load the YOLOv5 model
 model = torch.hub.load("ultralytics/yolov5", "custom", path=MODEL_PATH, force_reload=True)
+
+
 
 model.conf = 0.25  # Confidence threshold
 model.iou = 0.45   # IOU threshold
@@ -43,7 +48,9 @@ def run_model(image_input):
     # Check if detections exist
     if results.xyxy[0].shape[0] == 0:
         print("No caries detected in the image.")
-        return image  # Return original image if nothing is detected
+        return image, []  # Return original image if nothing is detected
+    
+    detections =[]
 
     # Process results
     for *xyxy, conf, cls in results.xyxy[0]:  # Iterate over detections
@@ -56,5 +63,16 @@ def run_model(image_input):
         # Put label above the box
         cv2.putText(image, label, (x1, max(y1 - 10, 10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
-    return image
+        # Store detection details
+        #trying this not sure if it'll work
+        detections.append({
+            "x_min": x1,
+            "y_min": y1,
+            "x_max": x2,
+            "y_max": y2,
+            "confidence": float(conf),
+            "class": "caries"
+        })
+
+    return image, detections
 
