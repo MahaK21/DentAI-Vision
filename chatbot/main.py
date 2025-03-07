@@ -32,7 +32,7 @@ def load_dental_documents(directory: str) -> List[Document]:
 
 
 # MODIFY AND ADD PATH TO FOLDER CONTAINING TEXT FILE - Memory
-dental_documents = load_dental_documents(r"chatbot/dental_mem")
+dental_documents = load_dental_documents(r"C:\Users\hetb0\Desktop\QMIND\Chatbot\dental_mem")
 
 def simple_retriever(query: str, documents: List[Document], top_k: int = 3) -> List[Document]:
     # rank documents based on keyword matches in title and content, skip if title has no match
@@ -72,6 +72,10 @@ class DeepSeekChat:
         result = response.json()
         return result["choices"][0]["message"]["content"]
 
+
+# Modify to model result
+POTENTIAL_CAVITIES = 0
+
 class SimpleDeepSeekConversationChain:
     # conversation chain that uses deepseek and document retrieval
     def __init__(self, llm: DeepSeekChat, memory: ConversationBufferMemory, documents: List[Document]):
@@ -84,16 +88,19 @@ class SimpleDeepSeekConversationChain:
         context_text = "\n".join([doc.page_content for doc in docs])
         references = "\n".join([f"- {doc.metadata.get('source', 'unknown')} (title: {doc.metadata.get('title', 'untitled')})" for doc in docs])
         history_text = "\n".join([msg.content for msg in self.memory.chat_memory.messages])
+        
         custom_prompt = (
             "you are dentai, a dental health assistant. answer the user's question simply and concisely using the provided dental information when relevant. "
-            "include references only if the retrieved context is used in your answer.\n\n"
+            "include references only if the retrieved context is used in your answer. also, note that the model has detected potentially {POTENTIAL_CAVITIES} cavities – please consider this information as a suggestion and consult a professional for a definitive diagnosis.\n\n"
+            "answer in a semi-casual chat format, respond only in paragraph format, and avoid bullet points or numbered lists.\n\n"
             "conversation history:\n"
             f"{history_text}\n\n"
             "dental context:\n"
             f"{context_text}\n\n"
             "user: {input}\nassistant:"
         )
-        prompt = custom_prompt.format(input=input_text)
+        
+        prompt = custom_prompt.format(input=input_text, POTENTIAL_CAVITIES=POTENTIAL_CAVITIES)
         response = self.llm(prompt)
         self.memory.chat_memory.add_message(SystemMessage(content="user: " + input_text))
         self.memory.chat_memory.add_message(SystemMessage(content="assistant: " + response))
@@ -102,6 +109,9 @@ class SimpleDeepSeekConversationChain:
         else:
             final_response = response.strip()
         return final_response
+
+
+
 
 DEEPSEEK_API_KEY = "sk-76ca8a646b09496aadcc04c0a387136b"
 deepseek_llm = DeepSeekChat(api_key=DEEPSEEK_API_KEY)
