@@ -38,19 +38,27 @@ export async function startConversation(imageFile, prompt) {
             },
             body: JSON.stringify({
                 message: prompt,
-                detections: data.detections
+                detections: dBlob
             })
         });
 
+        // Chatbot response
+        let chat_response = "";
+
         if (!response.ok) {
-            throw new Error("Error getting chatbot response");
+            // We got some error from the Chatbot. Print to console.
+            console.log(response);
+            chat_response = response.statusText;
+        }
+        else {
+            let chatData = await response.json();
+            console.log("Chatbot Response:", chatData.response);
+    
+            chat_response = chatData.response;
         }
 
-        let chatData = await response.json();
-        console.log("Chatbot Response:", chatData.response);
-
-		{ /* */ }
-        return chatData.response;
+        // Both the image and chatbot should have returned.
+        return {"image": url, "msg": chat_response}
 
     } catch (error) {
         

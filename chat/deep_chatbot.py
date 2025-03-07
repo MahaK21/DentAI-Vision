@@ -32,7 +32,7 @@ def load_dental_documents(directory: str) -> List[Document]:
 
 
 # MODIFY AND ADD PATH TO FOLDER CONTAINING TEXT FILE - Memory
-dental_documents = load_dental_documents(r"chatbot/dental_mem")
+dental_documents = load_dental_documents(r"backend/api/chatbot/dental_mem")
 
 def simple_retriever(query: str, documents: List[Document], top_k: int = 3) -> List[Document]:
     # rank documents based on keyword matches in title and content, skip if title has no match
@@ -112,21 +112,38 @@ class Chatbot:
         self.convo = SimpleDeepSeekConversationChain(llm=self.deepseek, memory=self.memory, documents=dental_documents)
     
     def respond(self, message: str):
-        return conversation.predict(input_text=message)
+        return self.convo.predict(input_text=message)
     
     
-DEEPSEEK_API_KEY = "sk-76ca8a646b09496aadcc04c0a387136b"
-deepseek_llm = DeepSeekChat(api_key=DEEPSEEK_API_KEY)
+# DEEPSEEK_API_KEY = "sk-76ca8a646b09496aadcc04c0a387136b"
+# deepseek_llm = DeepSeekChat(api_key=DEEPSEEK_API_KEY)
 
-memory = ConversationBufferMemory(memory_key="history", return_messages=True)
-memory.chat_memory.add_message(SystemMessage(content="hi, i'm dentai – your dental health assistant. how can i help you today?"))
+# memory = ConversationBufferMemory(memory_key="history", return_messages=True)
+# memory.chat_memory.add_message(SystemMessage(content="hi, i'm dentai – your dental health assistant. how can i help you today?"))
 
-conversation = SimpleDeepSeekConversationChain(llm=deepseek_llm, memory=memory, documents=dental_documents)
+# conversation = SimpleDeepSeekConversationChain(llm=deepseek_llm, memory=memory, documents=dental_documents)
 
-print("dentai chatbot (deepseek with local dental documents). type 'quit' to exit.")
-while True:
-    user_input = input("you: ")
-    if user_input.lower() == "quit":
-        break
-    answer = conversation.predict(input_text=user_input)
-    print("chatbot:", answer)
+# print("dentai chatbot (deepseek with local dental documents). type 'quit' to exit.")
+# while True:
+#     user_input = input("you: ")
+#     if user_input.lower() == "quit":
+#         break
+#     answer = conversation.predict(input_text=user_input)
+#     print("chatbot:", answer)
+
+if __name__ == "__main__":
+    DEEPSEEK_API_KEY = "sk-76ca8a646b09496aadcc04c0a387136b"
+    deepseek_llm = DeepSeekChat(api_key=DEEPSEEK_API_KEY)
+
+    memory = ConversationBufferMemory(memory_key="history", return_messages=True)
+    memory.chat_memory.add_message(SystemMessage(content="hi, i'm dentai – your dental health assistant. how can i help you today?"))
+
+    conversation = SimpleDeepSeekConversationChain(llm=deepseek_llm, memory=memory, documents=dental_documents)
+
+    print("dentai chatbot (deepseek with local dental documents). type 'quit' to exit.")
+    while True:
+        user_input = input("you: ")
+        if user_input.lower() == "quit":
+            break
+        answer = conversation.predict(input_text=user_input)
+        print("chatbot:", answer)

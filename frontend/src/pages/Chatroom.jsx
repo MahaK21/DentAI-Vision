@@ -33,9 +33,9 @@ class ChatMessage {
 
 function formatTime(timeMs) {
 
-  return timeMs;
-  // const date = new Date(timeMs);
-  // return date.toLocaleTimeString("en-CA");
+  // return timeMs;
+  const date = new Date(timeMs);
+  return date.toLocaleTimeString("en-CA", {hour: 'numeric', minute: 'numeric', hour12: true})
 }
 
 export default function Chatroom() {
@@ -75,18 +75,18 @@ useEffect(() => {
       console.log("Uploading image...");
 
       startConversation(state.image, state.text).then(response => {
-          console.log("Chatbot Response:");
-          console.log(response);
-          setResults(response);
+        // response comes in the form {"image": <url>, "msg": <chatbot response>}  
+        
+        setResults(response.image);
+        
+        // Save detections for future chats
+        // setPreviousDetections(response.detections || []);
 
-          // // Save detections for future chats
-          // setPreviousDetections(response.detections || []);
-
-          // // Add chatbot response to messages
-          // setMessages(prevMessages => [
-          //     ...prevMessages.slice(0, -1), // Remove "waiting" message
-          //     new ChatMessage(messages.length, response, "ai", Date.now())
-      //     ]);
+        // Add chatbot response to messages
+        setMessages(prevMessages => [
+            ...prevMessages.slice(0, -1), // Remove "waiting" message
+            new ChatMessage(messages.length, response.msg, "ai", Date.now())
+        ]);
       });
   }
   // want {state} to exist before we send.
@@ -180,21 +180,21 @@ useEffect(() => {
             >
               <div className="message-bubble">
               { message.image && (
-                <img src={URL.createObjectURL(message.image)}></img>
+                <img className="prompt-img" src={URL.createObjectURL(message.image)}></img>
               )}
               {message.text && (
                 <p className="message-text">{message.text}</p>
               )}
-              {message.time && (
-                <p className="message-timestamp">{message.time}</p>
-              )}
               </div>
+              {message.time && (
+              <p className="message-timestamp">{message.time}</p>
+              )}
             </div>
           ))}
 
           { /* Temporary placeholder for image results!*/}
           
-          {results && <img src={results}></img>}
+          {results && <img className="resp-image" src={results}></img>}
       </div>
       <form onSubmit={handleSubmit} className="input-form">
         <textarea

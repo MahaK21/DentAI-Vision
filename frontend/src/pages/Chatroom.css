@@ -53,7 +53,7 @@ Outstanding Bugs: Chatroom is using styles from About.css (causing border-radius
 	border-radius: 1rem;
   }
 
-  .message-bubble img {
+  .message-bubble .prompt-img {
 	width: 200px;
 	height: 200px;
 	object-fit: cover;

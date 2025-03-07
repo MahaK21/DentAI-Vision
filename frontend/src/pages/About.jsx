@@ -6,7 +6,7 @@ import Navbar from "../Navbar"
 const TeamMember = ({name, role, program, row, img}) => (
 	<div className="member" row={row}>
 		<div className="img">
-			<img src={`/assets/${img}`}></img>
+			<img className="about-pfp" src={`/assets/${img}`}></img>
 		</div>
 		<div className="details">
 			<h2>{name}</h2>

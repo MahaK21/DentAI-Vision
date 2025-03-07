@@ -36,7 +36,7 @@ app.add_middleware(
 
 # Create deepseek chatbot
 chatbot = Chatbot()
-print("hello!")
+print("DeepSeek chatbot is up and running!")
 
 class ChatData(BaseModel):
     message: str
@@ -81,6 +81,7 @@ async def chat(body: ChatData):
     return {"response": chatbot.respond(body.message)}
     
     # Placeholder msg: return {"response": "Hello from the chatbot!"};
+    return "hi";
     return response;
 
 if __name__ == "__main__":

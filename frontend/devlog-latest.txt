@@ -1,12 +1,17 @@
-02-27-25:
-- Setup routing using React Router
-- Setup base HTML for About Us
-- Implemented Navbar on all pages*
+03-06-25:
 
-Todo:
-- Figure out how Chatroom works + how to make it dynamic
-- Setup chatroom for backend integration.
-	- Image upload, send to server, response handling, etc.
-- Fix Navbar not showing up in Chatroom
-- CSS Styles and Team Member Grid for About Us
-- CSS Styles for 404 Page
+What we did:
+- Got the chatbot integration working! (woohoo)
+	- The frontend now connects to the model and the chatbot, and returns the annotated image and the text.
+	- The chatbot doesn't seem to be fully linked to the model (doesn't know which quadrant the cavity is in) but we're off to a good start.
+- Miscellaneous QoL Fixes:
+	- Replaced timestamp with standard time formatting (e.g. 8:48PM)
+	- Added individual classNames on img styles to fix stylesheet overriding
+
+Next Steps:
+	- Author texts (Could look like "You - 8:41PM", or "DentAI - 8:52AM")
+	- Add styling to chatbot response (paragraphs, bold, etc.)
+	- Clickable images (fullscreen preview)
+	- "..." message (+ loading animation)
+
+Great work everyone!!
