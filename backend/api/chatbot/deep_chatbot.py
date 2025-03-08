@@ -77,6 +77,8 @@ class DeepSeekChat:
         result = response.json()
         return result["choices"][0]["message"]["content"]
 
+POTENTIAL_CAVITIES = 0
+
 class SimpleDeepSeekConversationChain:
     # conversation chain that uses deepseek and document retrieval
     def __init__(self, llm: DeepSeekChat, memory: ConversationBufferMemory, documents: List[Document]):
@@ -92,18 +94,20 @@ class SimpleDeepSeekConversationChain:
         custom_prompt = (
             "you are dentai, a dental health assistant. answer the user's question simply and concisely using the provided dental information when relevant. "
             "include references only if the retrieved context is used in your answer.\n\n"
+            "Use **bold** for important terms and percentages, and maintain paragraph spacing.\n\n"
+            "answer in a semi-casual chat format, respond only in paragraph format, and avoid bullet points or numbered lists.\n\n"
             "conversation history:\n"
             f"{history_text}\n\n"
             "dental context:\n"
             f"{context_text}\n\n"
             "user: {input}\nassistant:"
         )
-        prompt = custom_prompt.format(input=input_text)
+        prompt = custom_prompt.format(input=input_text, POTENTIAL_CAVITIES=POTENTIAL_CAVITIES)
         response = self.llm(prompt)
         self.memory.chat_memory.add_message(SystemMessage(content="user: " + input_text))
         self.memory.chat_memory.add_message(SystemMessage(content="assistant: " + response))
         if context_text.strip() and references.strip():
-            final_response = response.strip() + "\n\nreferences:\n" + references
+            final_response = response.strip() + "\n\nReferences:\n" + references
         else:
             final_response = response.strip()
         return final_response

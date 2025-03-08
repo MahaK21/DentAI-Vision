@@ -83,6 +83,8 @@ async def predict(request: Request, file: UploadFile = File(...)):
     return FileResponse(temp.name, media_type="image/jpeg");
    # return {"detections": results}
 
+
+
 @app.post("/chat")
 async def chat(body: ChatData):
 

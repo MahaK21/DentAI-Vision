@@ -18,7 +18,10 @@ class ChatMessage {
     this.id = id;
     this.text = text;
     this.sender = sender;
-    this.time = formatTime(time); // we could store this as a numeric time value, then format later, or as a str (e.g. "Today @ 5:08PM")
+
+    if (time !== "NONE") {
+      this.time = formatTime(time);
+    }
   }
 
   addImage(image) {
@@ -37,6 +40,14 @@ function formatTime(timeMs) {
   // return timeMs;
   const date = new Date(timeMs);
   return date.toLocaleTimeString("en-CA", {hour: 'numeric', minute: 'numeric', hour12: true})
+}
+
+function formatChatbotMessage(text) {
+  let formattedText = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+
+  // Convert new lines "\n" to "<br>" for proper HTML line breaks
+  formattedText = formattedText.replace(/\n/g, "<br>");
+  return { __html: formattedText }; // Return as HTML for React's dangerouslySetInnerHTML
 }
 
 export default function Chatroom() {
@@ -59,7 +70,7 @@ export default function Chatroom() {
 
   const [messages, setMessages] = useState([
     firstMessage,
-    new ChatMessage(1, "...", "ai", null)
+    new ChatMessage(1, "...", "ai", "NONE")
   ])
 
   const [inputValue, setInputValue] = useState("")
@@ -103,7 +114,7 @@ useEffect(() => {
     // Add user message to UI
     let index = messages.length;
     const msg = new ChatMessage(index, inputValue, "user", Date.now());
-    setMessages(prevMessages => [...prevMessages, msg, { "type": "waiting" }]);
+    setMessages(prevMessages => [...prevMessages, msg, new ChatMessage(1, "...", "ai", "NONE")]);
 
     // Send message to chatbot using previous detections
     const response = await chatWithChatbot(inputValue, previousDetections);
@@ -153,7 +164,90 @@ useEffect(() => {
 
   return (
 
-    <div>
+    // <div>
+    //   <Navbar/>
+    //   <div className="chat-container">
+    //     <h1 className="chat-title">Your X-Ray Review</h1>
+
+    //     <div className="messages-container">
+    //       {messages.map((message) => (
+    //         <><div key={message.id} className={`message-wrapper ${message.sender === "user" ? "user-message" : "ai-message"}`}>
+    //           <div className="message-bubble">
+    //             {(message.sender === "ai" ? (
+    //               <p className="message-text" dangerouslySetInnerHTML={formatChatbotMessage(message.text)}></p>
+    //             )}
+    //             {message.image && (
+
+    //               <img className="prompt-img" src={message.image}></img>
+    //             )}
+
+    //             <div className="message-bubble">
+    //               {message.text && (
+    //                 <p className="message-text">{message.text}</p>
+    //               )}
+    //             </div>
+
+    //             {message.time && (
+    //               <p className="message-timestamp">{(message.sender === "user" ? "You - " : "DentAI - ") + message.time}</p>
+    //             )}
+    //           </div>
+    //           )
+    //           )}
+    //         </div><form onSubmit={handleSubmit} className="input-form">
+    //             <textarea
+    //               value={inputValue}
+    //               onChange={(e) => setInputValue(e.target.value)}
+    //               placeholder="What can I help you with today?"
+    //               className="message-input"
+    //               rows={1} />
+    //             <button type="submit" className="send-button">
+    //               Send
+    //             </button>
+    //           </form></>
+    // </div>
+    // </div>
+
+//     <div>
+//   <Navbar />
+//   <div className="chat-container">
+//     <h1 className="chat-title">Your X-Ray Review</h1>
+
+//     <div className="messages-container">
+//       {messages.map((message) => (
+//         <div key={message.id} className={`message-wrapper ${message.sender === "user" ? "user-message" : "ai-message"}`}>
+//           <div className="message-bubble">
+//             {message.sender === "ai" ? (
+//               <p className="message-text" dangerouslySetInnerHTML={formatChatbotMessage(message.text)}></p>
+//             ) : (
+//               <p className="message-text">{message.text}</p>
+//             )}
+
+//             {message.image && <img className="prompt-img" src={message.image} alt="Message attachment" />}
+
+//             {message.time && (
+//               <p className="message-timestamp">
+//                 {message.sender === "user" ? "You - " : "DentAI - "}
+//                 {message.time}
+//               </p>
+//             )}
+//           </div>
+//         </div>
+//       ))}
+//     </div>
+
+//     <form onSubmit={handleSubmit} className="input-form">
+//       <textarea
+//         value={inputValue}
+//         onChange={(e) => setInputValue(e.target.value)}
+//         placeholder="What can I help you with today?"
+//         className="message-input"
+//         rows={1}
+//       />
+//       <button type="submit" className="send-button">Send</button>
+//     </form>
+//   </div>
+// </div>
+<div>
       <Navbar/>
       <div className="chat-container">
         <h1 className="chat-title">Your X-Ray Review</h1>
@@ -171,9 +265,12 @@ useEffect(() => {
               )}
                 
               <div className="message-bubble">
-              {message.text && (
-                <p className="message-text">{message.text}</p>
-              )}
+
+                {
+                  (message.sender === "ai" ? (
+                    <p className="message-text" dangerouslySetInnerHTML={formatChatbotMessage(message.text)}></p>
+                  ):<p className="message-text">{message.text}</p>)
+                }
               </div>
               {message.time && (
               <p className="message-timestamp">{(message.sender === "user" ? "You - " : "DentAI - ") + message.time}</p>
