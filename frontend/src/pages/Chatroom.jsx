@@ -23,6 +23,7 @@ class ChatMessage {
 
   addImage(image) {
     this.image = image;
+    return this;
   }
 }
 
@@ -48,7 +49,7 @@ export default function Chatroom() {
   // Construct the first message from new-chat
   const firstMessage = new ChatMessage(0, state.text, "user", state.time);
   if (state.image){
-    firstMessage.addImage(state.image);
+    firstMessage.addImage(URL.createObjectURL(state.image));
   }
 
   // Array of messages for AI and user convo
@@ -83,32 +84,17 @@ useEffect(() => {
         // setPreviousDetections(response.detections || []);
 
         // Add chatbot response to messages
+
+        console.log(response.image);
         setMessages(prevMessages => [
             ...prevMessages.slice(0, -1), // Remove "waiting" message
-            new ChatMessage(messages.length, response.msg, "ai", Date.now())
+            new ChatMessage(messages.length, response.msg, "ai", Date.now()).addImage(response.image)
         ]);
       });
   }
   // want {state} to exist before we send.
 }, [state.image, state.text]);
 
-
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault()
-  //   if (!inputValue.trim()) return
-    
-  //   // Upload the message to the UI
-  //   let index = messages.length;
-  //   const msg = new ChatMessage(index, inputValue, "user", Date.now());
-
-  //   messages[index] = msg;
-
-  //   // TODO: Send chatbot message to backend.
-
-  //   setInputValue("")
-  //   console.log(state);
-  // }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -178,23 +164,22 @@ useEffect(() => {
             key={message.id}
             className={`message-wrapper ${message.sender === "user" ? "user-message" : "ai-message"}`}
             >
-              <div className="message-bubble">
+              
               { message.image && (
-                <img className="prompt-img" src={URL.createObjectURL(message.image)}></img>
+                //<img className="prompt-img" src={URL.createObjectURL(message.image)}></img>
+                <img className="prompt-img" src={message.image}></img>
               )}
+                
+              <div className="message-bubble">
               {message.text && (
                 <p className="message-text">{message.text}</p>
               )}
               </div>
               {message.time && (
-              <p className="message-timestamp">{message.time}</p>
+              <p className="message-timestamp">{(message.sender === "user" ? "You - " : "DentAI - ") + message.time}</p>
               )}
             </div>
           ))}
-
-          { /* Temporary placeholder for image results!*/}
-          
-          {results && <img className="resp-image" src={results}></img>}
       </div>
       <form onSubmit={handleSubmit} className="input-form">
         <textarea

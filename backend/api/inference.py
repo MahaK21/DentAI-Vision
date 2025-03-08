@@ -10,6 +10,13 @@ import cv2
 import numpy as np
 from pathlib import Path
 
+import pathlib
+
+WINDOWS_OS = True
+
+if WINDOWS_OS:
+    pathlib.PosixPath = pathlib.WindowsPath
+    
 # Path to the trained model
 MODEL_PATH = Path("model/dentai_yolov5s/weights/best_fixed.pt")
 
