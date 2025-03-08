@@ -77,7 +77,7 @@ class DeepSeekChat:
         result = response.json()
         return result["choices"][0]["message"]["content"]
 
-POTENTIAL_CAVITIES = 0
+
 
 class SimpleDeepSeekConversationChain:
     # conversation chain that uses deepseek and document retrieval
@@ -95,7 +95,11 @@ class SimpleDeepSeekConversationChain:
             "you are dentai, a dental health assistant. answer the user's question simply and concisely using the provided dental information when relevant. "
             "include references only if the retrieved context is used in your answer.\n\n"
             "Use **bold** for important terms and percentages, and maintain paragraph spacing.\n\n"
+            "Do not mention how many confirmed cavities there are."
+            "Always specify how many potential cavities there are in the x-ray"
             "answer in a semi-casual chat format, respond only in paragraph format, and avoid bullet points or numbered lists.\n\n"
+             f"There are currently **{POTENTIAL_CAVITIES} potential cavities** detected in the X-ray analysis.\n\n"
+            "Conversation history:\n"
             "conversation history:\n"
             f"{history_text}\n\n"
             "dental context:\n"
@@ -112,6 +116,8 @@ class SimpleDeepSeekConversationChain:
             final_response = response.strip()
         return final_response
 
+POTENTIAL_CAVITIES = 0
+
 class Chatbot:
 
     def __init__(self):
@@ -124,12 +130,18 @@ class Chatbot:
     #     return self.convo.predict(input_text=message)
 
     def respond(self, message: str, detections=None):
+          # Ensure we update the global variable
+          # Reset before counting new detections
+
         if detections:
             detection_info = "Here’s what I found in your X-ray:\n"
             for det in detections:
-                detection_info += f"- {det['label']} detected with {det['confidence']*100:.1f}% confidence.\n"
+                if "cavity" in det["label"].lower():  # Only count cavities
+                    POTENTIAL_CAVITIES += 1
+                detection_info += f"- **{det['label']}** detected with **{det['confidence']*100:.1f}%** confidence.\n"
 
-            message = detection_info + "\n\n" + message  # Append detection results to user query
+            # Append detection results to the user's message
+            message = detection_info + "\n\n" + message  
 
         return self.convo.predict(input_text=message)
     

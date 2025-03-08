@@ -39,12 +39,14 @@ function formatTime(timeMs) {
 }
 
 function formatChatbotMessage(text) {
-  let formattedText = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+  if (!text) return { __html: "" };  // ✅ Ensure text is not undefined/null
 
-  // Convert new lines "\n" to "<br>" for proper HTML line breaks
-  formattedText = formattedText.replace(/\n/g, "<br>");
-  return { __html: formattedText }; // Return as HTML for React's dangerouslySetInnerHTML
+  let formattedText = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");  // Bold formatting
+  formattedText = formattedText.replace(/\n/g, "<br>");  // Line break formatting
+
+  return { __html: formattedText };  
 }
+
 
 export default function Chatroom() {
   
