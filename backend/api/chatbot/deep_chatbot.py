@@ -116,7 +116,17 @@ class Chatbot:
 
         self.convo = SimpleDeepSeekConversationChain(llm=self.deepseek, memory=self.memory, documents=dental_documents)
     
-    def respond(self, message: str):
+    # def respond(self, message: str):
+    #     return self.convo.predict(input_text=message)
+
+    def respond(self, message: str, detections=None):
+        if detections:
+            detection_info = "Here’s what I found in your X-ray:\n"
+            for det in detections:
+                detection_info += f"- {det['label']} detected with {det['confidence']*100:.1f}% confidence.\n"
+
+            message = detection_info + "\n\n" + message  # Append detection results to user query
+
         return self.convo.predict(input_text=message)
     
 if __name__ == "__main__":    
