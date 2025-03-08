@@ -38,6 +38,14 @@ function formatTime(timeMs) {
   return date.toLocaleTimeString("en-CA", {hour: 'numeric', minute: 'numeric', hour12: true})
 }
 
+function formatChatbotMessage(text) {
+  let formattedText = text.replace(/\*\*(.*?)\*\*/g, "<b>$1</b>");
+
+  // Convert new lines "\n" to "<br>" for proper HTML line breaks
+  formattedText = formattedText.replace(/\n/g, "<br>");
+  return { __html: formattedText }; // Return as HTML for React's dangerouslySetInnerHTML
+}
+
 export default function Chatroom() {
   
   const [results, setResults] = useState(null);
@@ -179,12 +187,15 @@ useEffect(() => {
             className={`message-wrapper ${message.sender === "user" ? "user-message" : "ai-message"}`}
             >
               <div className="message-bubble">
+              {message.sender === "ai" ? (
+              <p className="message-text" dangerouslySetInnerHTML={formatChatbotMessage(message.text)}></p>
+              ) : (
+              <p className="message-text">{message.text}</p>
+               )}
               { message.image && (
                 <img className="prompt-img" src={URL.createObjectURL(message.image)}></img>
               )}
-              {message.text && (
-                <p className="message-text">{message.text}</p>
-              )}
+              
               </div>
               {message.time && (
               <p className="message-timestamp">{message.time}</p>
