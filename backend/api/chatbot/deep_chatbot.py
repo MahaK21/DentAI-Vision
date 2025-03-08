@@ -97,6 +97,7 @@ class SimpleDeepSeekConversationChain:
             "Use **bold** for important terms and percentages, and maintain paragraph spacing.\n\n"
             "Do not mention how many confirmed cavities there are."
             "Always specify how many potential cavities there are in the x-ray"
+            "Include different emojis in your response whenever relevant, at a maximum of 3 emojis per message"
             "answer in a semi-casual chat format, respond only in paragraph format, and avoid bullet points or numbered lists.\n\n"
              f"There are currently **{POTENTIAL_CAVITIES} potential cavities** detected in the X-ray analysis.\n\n"
             "Conversation history:\n"
