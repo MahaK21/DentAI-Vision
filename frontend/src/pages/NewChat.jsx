@@ -10,6 +10,9 @@ const NewChat = () => {
 
 	const [file, setFile] = useState(null)
 	const [prompt, setPrompt] = useState("")
+  const [isChecked, setIsChecked] = useState(false)  // Checkbox state
+  const [showTerms, setShowTerms] = useState(false)  // Terms popup state
+
 
 	const navigate = useNavigate();
 
@@ -21,6 +24,7 @@ const NewChat = () => {
 
 	function startNewChat(file, prompt) {
     // Note: We know the data is valid at this point.
+    if (!isChecked) return; 
 		navigate("/chat", {state: {image: file, text: prompt, time: Date.now()}});
 	}
   
@@ -62,6 +66,38 @@ const NewChat = () => {
 		<input type="file" ref={inputField} onChange={e => setFile(e.target.files[0])} style={{display: "none"}}></input>
 
         <p className="helper-text">{getStatusMsg()}</p>
+        
+{/* Centered Terms and Consent Section */}
+<div className="consent-wrapper">
+    <div className="consent-container">
+        <input 
+            type="checkbox" 
+            id="consent-checkbox"
+            checked={isChecked}
+            onChange={() => setIsChecked(!isChecked)}
+        />
+        <label htmlFor="consent-checkbox">
+            I agree to the <span 
+                className="terms-link"
+                onMouseEnter={() => setShowTerms(true)}
+                onMouseLeave={() => setShowTerms(false)}
+                onClick={() => setShowTerms(!showTerms)}
+            >terms</span> and consent to my X-ray being analyzed.
+        </label>
+    </div>
+
+    {/* Terms Popup Box (Wider Now) */}
+    {showTerms && (
+        <div className="terms-popup">
+            <ul>
+                <li>By uploading my X-ray, I consent to its temporary processing by the AI model to detect cavities.</li>
+                <li>My image will not be stored after the session ends.</li>
+                <li>The AI system is for informational purposes only and does not replace professional dental diagnosis.</li>
+                <li>I understand that results may not be 100% accurate, and I should consult a dentist for medical advice.</li>
+            </ul>
+        </div>
+    )}
+</div>
 
         {/* Chat Input */}
         <div className="chat-input-container">
@@ -72,7 +108,13 @@ const NewChat = () => {
 			/>
 
 		  { /* When we click this, we need to get the data from the text field and the image */}
-          <button className="send-button" onClick={() => startNewChat(file, prompt)}>Send</button>
+      <button 
+    className="send-button" 
+    onClick={() => startNewChat(file, prompt)} 
+    disabled={!isChecked} // Disable button when checkbox is unchecked
+>
+    Send
+</button>
         </div>
       </main>
     </div>
