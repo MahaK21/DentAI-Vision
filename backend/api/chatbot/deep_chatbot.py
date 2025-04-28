@@ -139,8 +139,7 @@ class Chatbot:
         return self.convo.predict(input_text=message)
     
 if __name__ == "__main__":    
-    DEEPSEEK_API_KEY = "sk-76ca8a646b09496aadcc04c0a387136b"
-    deepseek_llm = DeepSeekChat(api_key=DEEPSEEK_API_KEY)
+    deepseek_llm = DeepSeekChat(os.getenv('DEEPSEEK_KEY'))
 
     memory = ConversationBufferMemory(memory_key="history", return_messages=True)
     memory.chat_memory.add_message(SystemMessage(content="hi, i'm dentai – your dental health assistant. how can i help you today?"))
