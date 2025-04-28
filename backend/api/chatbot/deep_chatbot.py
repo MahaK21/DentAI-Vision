@@ -8,7 +8,12 @@ from langchain.memory import ConversationBufferMemory
 from langchain.schema import SystemMessage
 from langchain.docstore.document import Document
 
+from dotenv import load_dotenv
+
 from fastapi.exceptions import HTTPException
+
+# Load the env variables
+load_dotenv()
 
 def load_dental_documents(directory: str) -> List[Document]:
     # load txt files from folder and extract source, title, and content
@@ -115,7 +120,7 @@ class SimpleDeepSeekConversationChain:
 class Chatbot:
 
     def __init__(self):
-        self.deepseek = DeepSeekChat("sk-76ca8a646b09496aadcc04c0a387136b") # TODO: Hide api key
+        self.deepseek = DeepSeekChat(os.getenv('DEEPSEEK_KEY'))
         self.memory = ConversationBufferMemory(memory_key="history", return_messages=True)
 
         self.convo = SimpleDeepSeekConversationChain(llm=self.deepseek, memory=self.memory, documents=dental_documents)
