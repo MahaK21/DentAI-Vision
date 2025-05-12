@@ -24,7 +24,6 @@ const Navbar = () => {
           <NavItem link="/">Home</NavItem>
           <NavItem link="/about" >About DentAI</NavItem>
           <NavItem link="/new-chat">Chat</NavItem>
-          <NavItem link="/contact">Contact</NavItem>
         </div>
   </nav>
   )

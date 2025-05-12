@@ -15,7 +15,7 @@ const Homepage = () => {
         <div className="hero-card">
           <div className="hero-content">
             <div className="mascot-container">
-              <img src={"./assets/placeholder.png"} alt="DentAI Mascot" className="mascot" />
+              <img src={"./assets/logo.png"} alt="DentAI Mascot" className="mascot" />
             </div>
             <h1 className="hero-title">DentAI Vision</h1>
           </div>

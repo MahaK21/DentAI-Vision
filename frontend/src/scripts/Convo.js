@@ -20,11 +20,20 @@ export async function startConversation(imageFile, prompt) {
             throw new Error("Error uploading image");
         }
 
-        let data = await response;
+        let data = await response.json();
 
         // This is a 'blob' of bytes (stores the file's data)
-        const dBlob = await data.blob();
-        const url = URL.createObjectURL(dBlob);
+        //const dBlob = await data.blob();
+        //const url = URL.createObjectURL(dBlob);
+        const detections = data.detections;
+        const imageBase64 = data.image;
+        if (!imageBase64.startsWith("/") && !imageBase64.includes("=")) {
+            console.error("Invalid Base64 image string:", imageBase64);
+            throw new Error("Invalid Base64 image format");
+        }
+
+        
+        const url = `data:image/jpeg;base64,${imageBase64}`;
 
         // If we want, we can return just the url (for debugging)... this will get the image working.
         //return url;
@@ -38,7 +47,7 @@ export async function startConversation(imageFile, prompt) {
             },
             body: JSON.stringify({
                 message: prompt,
-                detections: dBlob
+                detections: detections
             })
         });
 
@@ -58,7 +67,7 @@ export async function startConversation(imageFile, prompt) {
         }
 
         // Both the image and chatbot should have returned.
-        return {"image": url, "msg": chat_response}
+        return {"image": url, "msg": chat_response, "detections": detections}
 
     } catch (error) {
         

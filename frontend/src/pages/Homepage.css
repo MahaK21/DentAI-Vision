@@ -57,6 +57,7 @@ body {
   align-items: center;
   gap: 1.5rem;
   padding: 2rem;
+  text-align: center;
 }
 
 .chat-button > a { /* Styles for the embedded Link object in the button */

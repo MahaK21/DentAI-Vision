@@ -10,8 +10,15 @@ import cv2
 import numpy as np
 from pathlib import Path
 
+import pathlib
+
+WINDOWS_OS = True
+
+if WINDOWS_OS:
+    pathlib.PosixPath = pathlib.WindowsPath
+    
 # Path to the trained model
-MODEL_PATH = Path("model/dentai_yolov5s/weights/best.pt")
+MODEL_PATH = Path("model/dentai_yolov5s/weights/best_fixed.pt")
 
 # Load the YOLOv5 model
 model = torch.hub.load("ultralytics/yolov5", "custom", path=MODEL_PATH, force_reload=True)
@@ -39,22 +46,24 @@ def run_model(image_input):
 
     # Run inference
     results = model(image)
+    detections = []
 
     # Check if detections exist
     if results.xyxy[0].shape[0] == 0:
         print("No caries detected in the image.")
-        return image  # Return original image if nothing is detected
+        return image, detections  # Return original image if nothing is detected
 
     # Process results
     for *xyxy, conf, cls in results.xyxy[0]:  # Iterate over detections
         label = f"Caries {conf:.2f}"  # Create label with confidence
         x1, y1, x2, y2 = map(int, xyxy)  # Convert to integer coordinates
+        detections.append({"label": "Caries", "confidence": float(conf), "bbox": [x1, y1, x2, y2]})
 
         # Draw bounding box
         cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
         # Put label above the box
         cv2.putText(image, label, (x1, max(y1 - 10, 10)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-
+    return image, detections
     return image
 

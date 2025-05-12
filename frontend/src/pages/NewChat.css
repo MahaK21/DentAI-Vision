@@ -55,8 +55,34 @@
 	font-size: 40px;
 	font-weight: bold;
 	margin-bottom: 48px;
+	padding: 0px 0px 2rem 0px;
   }
   
+  .intro-message-wrapper {
+	background-color: var(--color-primary-lightest);
+	color: var(--color-primary);
+	padding: 1rem;
+	border-radius: 1rem;
+	font-size: 1.3rem;
+	max-width: 60%;
+
+	margin-left: 8rem;
+  }
+
+  .intro-logo {
+	position: relative;
+  }
+  
+  .chat-intro {
+	align-items: center;
+	justify-content: center;
+	margin-left: 5em;
+  }
+
+  .intro-msg {
+	display: inline-block;
+  }
+
   /* Upload Button */
   .upload-button {
 	background-color: #6b86d3;

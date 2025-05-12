@@ -15,6 +15,7 @@ section {
 
 h1 {
 	font-size: 36px;
+	margin-bottom: 2rem;
 }
 
 /* ---- Styles for member cards ---- */
@@ -23,7 +24,7 @@ h1 {
 	display: grid;
 	/*flex-direction: row;*/
 	grid-template-rows: 1fr 1fr;
-	grid-template-columns: repeat(12, 1fr);
+	grid-template-columns: repeat(6, 1fr);
 
 	/* This aligns the items in each grid box.*/
 	text-align: center;
@@ -78,23 +79,49 @@ h1 {
 }
 
 .details {
-	padding: 8px;
+	padding: 2px;
 }
 .details > h2 {
 	margin: 10px 0px 0px 0px;
-	padding: 0px 0px 5px 0px;
+	/* padding: 0px 0px 0px 0px; */
 }
 
 .details > h4 {
 	margin: 2px 0px 0px 0px;
+	font-weight: 500;
+}
+
+.checkout {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+}
+
+.checkout > img {
+	width: 10rem;
+	height: auto;
 }
 
 .member[row="1"] {
-	grid-column: span 3;
+	grid-column: span 2;
 }
 
 .member[row="2"] {  /* This notation allows us to define custom selectors. Yay!*/
-	grid-column: span 4;
+	grid-column: span 3;
+}
+
+.github {
+	padding: 0.5rem 0.2rem 0.2rem 0.2rem;
+	display: flex;
+	flex-direction: row;
+	column-gap: 1rem;
+	color: var(--color-primary);
+}
+
+.github > img {
+	width: 2rem;
+	height: auto;
 }
 
 /* ---- ---- */

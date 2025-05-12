@@ -8,6 +8,8 @@ FastAPI server that connects the model to the frontend.
 from fastapi import FastAPI, UploadFile, File, Response
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+import base64
 
 from inference import run_model
 import io
@@ -57,7 +59,8 @@ async def predict(request: Request, file: UploadFile = File(...)):
     print(len(image))
 
     print("running da model")
-    processed_img = run_model(image)
+    #processed_img = run_model(image)
+    processed_img, detections = run_model(image)
 
     temp = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
     print(temp);
@@ -66,17 +69,38 @@ async def predict(request: Request, file: UploadFile = File(...)):
     #cv2.imwrite("../images/result.jpg", processed_img);
     
     _, buffer = cv2.imencode(".jpg", processed_img);
+    image_base64 = base64.b64encode(buffer).decode("utf-8")
+
+    # return {
+    #     "image": Response(content=buffer.tobytes(), media_type="image/jpeg"),
+    #     "detections": detections  # Include the detected objects
+    # }
+
+    return JSONResponse(content={"image": image_base64, "detections": detections})
 
     return Response(content=buffer.tobytes(), media_type="image/jpeg");
 
     return FileResponse(temp.name, media_type="image/jpeg");
    # return {"detections": results}
 
+
+
 @app.post("/chat")
 async def chat(body: ChatData):
 
     print(f"message: {body.message}")
     print(f"detections: {body.detections}")
+
+    if body.detections:
+        detection_summary = "I analyzed your X-ray and found the following:\n"
+        for det in body.detections:
+            detection_summary += f"- {det['label']} detected with {det['confidence']*100:.1f}% confidence.\n"
+
+        response_text = chatbot.respond(detection_summary + "\n\n" + body.message)
+    else:
+        response_text = chatbot.respond(body.message)
+
+    return {"response": response_text}
     
     return {"response": chatbot.respond(body.message)}
     
